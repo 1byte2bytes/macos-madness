@@ -1,5 +1,9 @@
 # boot0.s
 
+This is a work in progress article. See incorrect information or want to add on? Submit a pull request and contribute!
+
+## The Start of the Bootloader
+
 ```Assembly
 ;--------------------------------------------------------------------------
 ; Boot code is loaded at 0:7C00h.
