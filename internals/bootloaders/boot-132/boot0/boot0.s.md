@@ -20,7 +20,11 @@ start
     sti                             ; reenable interrupts
 ```
 
-We disable interrupts, since we don't have any code to handle them yet. Plus they can modify the stack, which we don't want, since we're trying to move it. Next, we clear the contents (make them 0) of the register `AX`. Then, we move the contents of the register `AX` (0) into the register `SS`. The register `SS` is our Stack Segment, which should point to the bottom of the stack. Next we move the contents of `kBoot0Stack` (`0xFFF0`) into the register `SP`, or the Stack Pointer register. This points to the top of the stack. Then we re-enable interrupts.
+1. We disable interrupts. Interrupts can mess with the stack, which we don't want since we're trying to move it.
+2. Next, we clear the contents (make 0) of the register `AX`. 
+3. Then, we move the contents of the register `AX` (0) into the register `SS`. The register `SS` is our Stack Segment, which should point to the bottom of the stack. 
+4. Next we move the contents of `kBoot0Stack` (`0xFFF0`) into the register `SP`, or the Stack Pointer register. This points to the top of the stack. 
+5. Then we re-enable interrupts.
 
 ---
 
@@ -31,7 +35,10 @@ We disable interrupts, since we don't have any code to handle them yet. Plus the
 
 This section is pretty simple. You could probably figure it out from the comments in the code, but for completetion:
 
-We move the contents of register `AX`, which is 0, into both the registers `ES` and `DS`. These are registers related to copying strings. We're probably emptying them since we aren't copying a string, for cleanup.
+1. We move the contents of register `AX`, which is 0, into the register `ES`.
+2. We do the same for register `DS`.
+
+These are registers related to copying strings. We're probably emptying them since we aren't copying a string, for cleanup.
 
 ---
 
@@ -47,9 +54,11 @@ We move the contents of register `AX`, which is 0, into both the registers `ES` 
     repnz   movsw                   ; repeat string move (word) operation
 ```
 
-We move the pointer for the beginning of the boot0 code into register `SI`, or Source Index. Then we move the destination address into register `DI`, or Destination Index. 
-
-Then we execute the instruction `cld` for CLear Direction flag. This tells the CPU that we want to copy data going from the source address forward. Then, we `mov` 256 "words" (16 bits) from the source to the destination. Each time this is done, the `SI` and `DI` registers are automatically incremented. We execute the `repnz` instruction after each time to continue copying until we've copied everything.
+1. We move the pointer for the beginning of the boot0 code into register `SI`, or Source Index. 
+2. Then we move the destination address into register `DI`, or Destination Index. 
+3. Then we execute the instruction `cld` for CLear Direction flag. This tells the CPU that we want to copy data going from the source address forward. 
+4. Then, we `mov` 256 "words" (16 bits) from the source to the destination. Each time this is done, the `SI` and `DI` registers are automatically incremented. 
+5. We execute the `repnz` instruction after each time to continue copying until we've copied everything.
 
 ---
 
@@ -59,4 +68,4 @@ Then we execute the instruction `cld` for CLear Direction flag. This tells the C
     jmp     0:start_reloc
 ```
 
-The code has been successfully relocated, this tells the CPU to start executing in the new place we stored the bootloader. In this case, the beginning of `start_reloc`, which is defined below.
+1. The code has been successfully relocated, this tells the CPU to start executing in the new place we stored the bootloader. In this case, the beginning of `start_reloc`, which is defined below.
