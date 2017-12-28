@@ -54,10 +54,10 @@ These are registers related to copying strings. We're probably emptying them sin
     repnz   movsw                   ; repeat string move (word) operation
 ```
 
-1. We move the pointer for the beginning of the boot0 code into register `SI`, or Source Index. 
-2. Then we move the destination address into register `DI`, or Destination Index. 
+1. We move the pointer for the beginning of the boot0 code (RAM address `0x7C00`) into register `SI`, or Source Index. 
+2. Then we move the destination address `0xE000` into register `DI`, or Destination Index. 
 3. Then we execute the instruction `cld` for CLear Direction flag. This tells the CPU that we want to copy data going from the source address forward. 
-4. Then, we `mov` 256 "words" (16 bits) from the source to the destination. Each time this is done, the `SI` and `DI` registers are automatically incremented. 
+4. Then, we `mov` 256 "words" (16 bits, kSectorBytes is equal to 512. It is divided in half here.) from the source to the destination. Each time this is done, the `SI` and `DI` registers are automatically incremented. 
 5. We execute the `repnz` instruction after each time to continue copying until we've copied everything. `repnz` is for REPeat Not Zero, and will repeat the called function `movsw` until the Zero Flag is not zero.
 
 ---
